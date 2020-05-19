@@ -410,7 +410,7 @@ jobs:
 # - static codeanalysis of the style files
   bazel_stylelint:
     executor: bazel
-    resource_class: xlarge
+    resource_class: large
     steps:
       - setup_bazel_ci
       - run:
@@ -421,15 +421,32 @@ jobs:
           path: ./profile.gz
           destination: bazel-performance-profile
 
+# - unit testing with jest
+  bazel_unit_test:
+    executor: bazel
+    resource_class: large
+    steps:
+      - setup_bazel_ci
+      - run:
+          name: Run Jest Unit Tests
+          command: bazel query "attr(generator_function, jest, //...)" | xargs bazel test --profile=./profile.gz --record_full_profiler_data
+      - get_bazel_testlogs
+      - store_artifacts:
+          path: ./profile.gz
+          destination: bazel-performance-profile
+
 # - build all targets with bazel
-  # bazel_build:
-  #   executor: bazel
-  #   resource_class: xlarge
-  #   steps:
-  #     - setup_bazel_ci
-  #     - run:
-  #         name: Run Build
-  #         command: bazel build //...
+  bazel_build:
+    executor: bazel
+    resource_class: xlarge
+    steps:
+      - setup_bazel_ci
+      - run:
+          name: Run Build
+          command: bazel build //... --profile=./profile.gz --record_full_profiler_data
+      - store_artifacts:
+          path: ./profile.gz
+          destination: bazel-performance-profile
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -445,13 +462,6 @@ jobs:
 workflows:
   version: 2.1
 
-  bazelify:
-    jobs:
-      - bazel_stylelint:
-          context: barista
-      # - bazel_build:
-      #     context: barista
-
 # - Publish the workspace image on every master build
   workspace-build:
     jobs:
@@ -465,6 +475,12 @@ workflows:
 
   fork-check:
     jobs:
+      - bazel_stylelint:
+          <<: *filter_forks
+      - bazel_unit_test:
+          <<: *filter_forks
+      - bazel_build:
+          <<: *filter_forks
       - install:
           <<: *filter_forks
       - check-formatting:
@@ -476,8 +492,6 @@ workflows:
       - lint-workspace:
           requires:
             - install
-      - bazel_stylelint:
-          <<: *filter_forks
       - unit-test:
           requires:
             - install
@@ -494,6 +508,15 @@ workflows:
 # - Runs on every PR check
   pr-check:
     jobs:
+      - bazel_stylelint:
+          <<: *filter_branches
+          context: barista
+      - bazel_unit_test:
+          <<: *filter_branches
+          context: barista
+      - bazel_build:
+          <<: *filter_branches
+          context: barista
       - install:
           <<: *filter_branches
           context: barista
