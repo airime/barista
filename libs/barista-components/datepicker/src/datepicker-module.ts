@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-export * from './src/common-behaviours/index';
-export * from './src/error/index';
-export * from './src/util/index';
-export * from './src/logger/index';
-export * from './src/viewport/index';
-export * from './src/option/index';
-export * from './src/tree/index';
-export * from './src/animations/index';
-export * from './src/overlay/index';
-export * from './src/testing/index';
-export * from './src/date/index';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { DtButtonModule } from '@dynatrace/barista-components/button';
+import { DtDatePicker } from './datepicker';
+import { DtCalendar } from './calendar';
+import { OverlayModule } from '@angular/cdk/overlay';
+
+const COMPONENTS = [DtDatePicker, DtCalendar];
+
+@NgModule({
+  imports: [CommonModule, OverlayModule, DtButtonModule],
+  exports: COMPONENTS,
+  declarations: COMPONENTS,
+})
+export class DtDatepickerModule {}

@@ -1,0 +1,28 @@
+<table class="dt-calendar-table" role="presentation">
+  <thead class="dt-calendar-table-header">
+    <tr>
+      <th
+        scope="col"
+        *ngFor="let day of _weekdays"
+        [attr.aria-label]="day.long"
+      >
+        {{ day.short }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let week of _weeks; let weekIndex = index" role="row">
+      <td
+        *ngIf="weekIndex === 0 && _firstRowOffset"
+        aria-hidden="true"
+        [attr.colspan]="_firstRowOffset"
+      ></td>
+      <td
+        *ngFor="let cell of week; let dateIndex = index"
+        [class.dt-calendar-selected]="_isSelected(cell)"
+      >
+        {{ cell.displayValue }}
+      </td>
+    </tr>
+  </tbody>
+</table>
