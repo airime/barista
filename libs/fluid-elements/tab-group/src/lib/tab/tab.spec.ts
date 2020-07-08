@@ -22,8 +22,8 @@ function tick(): Promise<void> {
 
 function getTabRootElement(
   fixture: FluidTab,
-): HTMLLIElement | null | undefined {
-  return fixture.shadowRoot?.querySelector('li');
+): HTMLSpanElement | null | undefined {
+  return fixture.shadowRoot?.querySelector('span');
 }
 
 describe('Fluid tab', () => {

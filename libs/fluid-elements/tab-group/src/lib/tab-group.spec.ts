@@ -79,7 +79,7 @@ describe('Fluid tab group', () => {
     it('should set last activetabid attribute when a tab is clicked', async () => {
       const tab = fixture
         .querySelector('fluid-tab:last-child')
-        ?.shadowRoot?.querySelector('li') as HTMLLIElement;
+        ?.shadowRoot?.querySelector('span');
       tab?.click();
       await tick();
       expect(fixture.getAttribute('activetabid')).toBe('section2');
@@ -108,7 +108,7 @@ describe('Fluid tab group', () => {
       ).toBe('-1');
       fixture
         .querySelector('fluid-tab:last-child')
-        ?.shadowRoot?.querySelector('li')
+        ?.shadowRoot?.querySelector('span')
         ?.click();
       await tick();
       expect(
