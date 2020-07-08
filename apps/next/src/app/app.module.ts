@@ -23,7 +23,7 @@ import { NextRoutingModule } from './app.routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import {
   BaPageGuard,
-  BaPageService,
+  DsPageService,
 } from '@dynatrace/shared/data-access-strapi';
 import { APP_BASE_HREF } from '@angular/common';
 

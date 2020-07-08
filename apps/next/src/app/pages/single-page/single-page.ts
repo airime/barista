@@ -16,7 +16,7 @@
 
 import { Component } from '@angular/core';
 import { BaSinglePageContent } from '@dynatrace/shared/design-system/interfaces';
-import { BaPageService } from '@dynatrace/shared/data-access-strapi';
+import { DsPageService } from '@dynatrace/shared/data-access-strapi';
 
 @Component({
   selector: 'next-single-page',
@@ -30,5 +30,5 @@ export class NextSinglePage {
   /** @internal The current page content from the cms */
   _pageContent = this._pageService._getCurrentPage();
 
-  constructor(private _pageService: BaPageService<BaSinglePageContent>) {}
+  constructor(private _pageService: DsPageService<BaSinglePageContent>) {}
 }

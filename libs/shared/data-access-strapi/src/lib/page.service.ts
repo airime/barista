@@ -40,7 +40,7 @@ const ERROR_PAGE: BaErrorPageContent = {
 };
 
 @Injectable()
-export class BaPageService<T = any> {
+export class DsPageService<T = any> {
   /** Caches pages once they have been loaded. */
   _cache = new Map<string, T>();
 
@@ -83,6 +83,10 @@ export class BaPageService<T = any> {
     return of(this._cache.get(key)!);
   }
 
+  _getRoutes(): Observable<T> {
+    return this._fetchRoutes();
+  }
+
   /**
    * Fetches page from data source.
    * @param id - page id (path).
@@ -92,6 +96,11 @@ export class BaPageService<T = any> {
     return this._http
       .get<T>(requestPath, { responseType: 'json' })
       .pipe(tap((data) => this._cache.set(id, data)));
+  }
+
+  private _fetchRoutes(): Observable<T> {
+    const requestPath = `data/routes.txt`;
+    return this._http.get<T>(requestPath, { responseType: 'json' });
   }
 }
 

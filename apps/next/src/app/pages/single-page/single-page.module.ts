@@ -19,7 +19,7 @@ import { NgModule, Type } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import {
   BaPageGuard,
-  BaPageService,
+  DsPageService,
 } from '@dynatrace/shared/data-access-strapi';
 import { NextSinglePage } from './single-page';
 import {
@@ -47,7 +47,7 @@ export const DS_CONTENT_TYPES: Type<unknown>[] = [];
   declarations: [NextSinglePage, NextPageFooter],
   providers: [
     BaPageGuard,
-    BaPageService,
+    DsPageService,
     {
       provide: DS_CONTENT_COMPONENT_LIST_TOKEN,
       useValue: DS_CONTENT_TYPES,

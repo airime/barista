@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { BaPageService } from '@dynatrace/shared/data-access-strapi';
+import { DsPageService } from '@dynatrace/shared/data-access-strapi';
 import { NextPage } from '@dynatrace/shared/design-system/interfaces';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -32,7 +32,7 @@ export class NextIndexPage implements OnInit {
   content: SafeHtml;
 
   constructor(
-    private _pageService: BaPageService<NextPage>,
+    private _pageService: DsPageService<NextPage>,
     private _sanitizer: DomSanitizer,
   ) {}
 

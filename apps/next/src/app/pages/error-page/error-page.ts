@@ -15,7 +15,7 @@
  */
 
 import { Component } from '@angular/core';
-import { BaPageService } from '@dynatrace/shared/data-access-strapi';
+import { DsPageService } from '@dynatrace/shared/data-access-strapi';
 import { NextPage } from '@dynatrace/shared/design-system/interfaces';
 
 @Component({
@@ -29,5 +29,5 @@ import { NextPage } from '@dynatrace/shared/design-system/interfaces';
 export class NextErrorPage {
   content = this._pageService._getCurrentPage();
 
-  constructor(private _pageService: BaPageService<NextPage>) {}
+  constructor(private _pageService: DsPageService<NextPage>) {}
 }
