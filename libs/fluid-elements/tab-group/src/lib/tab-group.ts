@@ -22,23 +22,18 @@ import {
   property,
 } from 'lit-element';
 import styles from './tab-group.scss';
+import { FluidTab } from './tab/tab';
 import {
-  FluidTab,
   FluidTabActivatedEvent,
   FluidTabDisabledEvent,
-} from './tab/tab';
-
-/** Custom event implementation fires when the active tab has changes */
-export class FluidTabGroupActiveTabChanged extends CustomEvent<any> {
-  constructor(public activeTab: string) {
-    super('activeTabChanged', { bubbles: true, composed: true });
-  }
-}
+  FluidTabGroupActiveTabChanged,
+} from '../utils/tab-events';
 
 /**
- * A representation of a tab-list
- * @element fluid-tag-list
- * @slot - Default slot lets the user provide a list of fluid-tabs.
+ * This is a experimental version of the tab group component
+ * It registers itself as `fluid-tab-group` custom element.
+ * @element fluid-tag-group
+ * @slot - Default slot lets the user provide a group of fluid-tabs.
  */
 export class FluidTabGroup extends LitElement {
   /** Array of referrences to the fluid-tabs */
@@ -110,9 +105,11 @@ export class FluidTabGroup extends LitElement {
       this.tabChildren[index].tabindex = 0;
       this.tabChildren[oldIndex].tabindex = -1;
       this.activetabid = this.tabChildren[index].tabid;
+      console.log(this.tabChildren);
     }
   }
 
+  /** Checks wether the next tab is also disabled or not and sets the next not disabled tab as active  */
   private handleDisabled(disableTabEvent: FluidTabDisabledEvent): void {
     if (this.activetabid === disableTabEvent.disableTab) {
       const tabToEnable = this.tabChildren.find((tab) => !tab.disabled);
@@ -122,11 +119,11 @@ export class FluidTabGroup extends LitElement {
     }
   }
 
-  // Handles changes in the slot. Initially sets the active item (default is first)
+  /** Handles changes in the slot. Initially sets the active item (default is first) */
   private slotchange(): void {
     this.tabChildren = Array.from(this.querySelectorAll('fluid-tab'));
     // Initially set the first tab to active
-    if (!this.activetabid) {
+    if (!this.activetabid && this.tabChildren.length > 0) {
       this.tabChildren[0].active = true;
       this.activetabid = this.tabChildren[0].tabid;
     } else {
@@ -145,14 +142,14 @@ export class FluidTabGroup extends LitElement {
    */
   render(): TemplateResult {
     return html`
-      <ul
+      <div
         class="fluid-tab-group"
         @tabActivated="${this.handleClick}"
         @keydown="${this.handleKeyDown}"
         @disabled="${this.handleDisabled}"
       >
         <slot @slotchange="${this.slotchange}"></slot>
-      </ul>
+      </div>
     `;
   }
 }

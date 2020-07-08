@@ -23,25 +23,18 @@ import {
 } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import styles from './tab.scss';
+import {
+  FluidTabDisabledEvent,
+  FluidTabActivatedEvent,
+} from '../../utils/tab-events';
 
 let _unique = 0;
-
-/** Custom event implementation that fires when a tab is clicked providing the active tab id  */
-export class FluidTabActivatedEvent extends CustomEvent<any> {
-  constructor(public activeTab: string) {
-    super('tabActivated', { bubbles: true, composed: true });
-  }
-}
-
-export class FluidTabDisabledEvent extends CustomEvent<any> {
-  constructor(public disableTab: string) {
-    super('disabled', { bubbles: true, composed: true });
-  }
-}
 
 /**
  * This is a experimental version of the tab component
  * It registers itself as `fluid-tab` custom element.
+ * @element fluid-tab
+ * @slot - Default slot to provide a label for the tab.
  */
 export class FluidTab extends LitElement {
   /** Styles for the tab component */
@@ -91,6 +84,7 @@ export class FluidTab extends LitElement {
   }
   set tabindex(value: number) {
     this._tabindex = value;
+    // TODO: Figure out why using the old value does not work. The attribute vanishes in the dom/is not set
     this.requestUpdate('tabindex');
   }
   private _tabindex = 0;
@@ -107,23 +101,11 @@ export class FluidTab extends LitElement {
   set active(active: boolean) {
     // Only set active true if not disabled
     this._active = this.disabled === false ? active : false;
+    // TODO: Figure out why using the old value does not work. The attribute vanishes in the dom/is not set
     this.requestUpdate('active');
-    if (active) {
-      this.tabindex = 0;
-    } else {
-      this.tabindex = -1;
-    }
+    this.tabindex = this.active ? 0 : -1;
   }
   private _active = false;
-
-  constructor() {
-    super();
-  }
-
-  /** First updated lifecycle */
-  firstUpdated(props: Map<string | number | symbol, unknown>): void {
-    super.firstUpdated(props);
-  }
 
   /** Dispatches the custom event  */
   private dispatchActiveTabEvent(): void {
@@ -148,13 +130,13 @@ export class FluidTab extends LitElement {
     };
 
     // Linebreak causes the element to have a space
-    return html`<li
+    return html`<span
       class=${classMap(classes)}
       ?disabled="${this.disabled}"
       @click="${this.handleClick}"
     >
       <slot></slot>
-    </li>`;
+    </span>`;
   }
 }
 

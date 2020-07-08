@@ -1,53 +1,36 @@
 # fluid-tab
 
-A basic representation of the tab component
+This is a experimental version of the tab component. It registers itself as
+`fluid-tab` custom element.
 
 ## Properties
 
-| Property   | Attribute  | Type      | Default   | Description                             |
-| ---------- | ---------- | --------- | --------- | --------------------------------------- |
-| `tabid`    | `tabid`    | `boolean` | unique id | Sets an unique ID on the tab.           |
-| `active`   | `active`   | `boolean` | false     | Defines if the tab is active or not.    |
-| `tabindex` | `tabindex` | `number`  |           | Defines if the tab is focusable or not. |
-| `disabled` | `disabled` | `boolean` | false     | Defines if the tab is disabled or not.  |
-
-## Methods
-
-| Method   | Type       | Description                                                                                          |
-| -------- | ---------- | ---------------------------------------------------------------------------------------------------- |
-| `toggle` | `(): void` | Toggles the state of the checkbox.<br />When called programmatically will not fire a `change` event. |
-
-## Events
-
-| Event          | Description                                                                               |
-| -------------- | ----------------------------------------------------------------------------------------- |
-| `tabActivated` | Event that is being fired when the tab active state changes due<br />to user interaction. |
-| `disabled`     | Event that is being fired when the disabled<br />state of the checkbox changes.           |
+| Property   | Attribute  | Type      | Default                    | Description                                  |
+| ---------- | ---------- | --------- | -------------------------- | -------------------------------------------- |
+| `active`   | `active`   | `boolean` |                            | Defines whether a tab is active or not       |
+| `disabled` | `disabled` | `boolean` |                            | Defines whether a tab is disabled or not     |
+| `tabid`    | `tabid`    | `string`  | "`fluid-tab-${_unique++}`" | Defines the tab element with an id attribute |
+| `tabindex` | `tabindex` | `number`  |                            | Defines the tabindex attribute               |
 
 ## Slots
 
-| Name | Description                                                  |
-| ---- | ------------------------------------------------------------ |
-|      | Default slot lets the user provide a li element for the tab. |
+| Name | Description                                  |
+| ---- | -------------------------------------------- |
+|      | Default slot to provide a label for the tab. |
 
-# fluid-tab-group
+# fluid-tag-group
 
-A basic representation of the tab grouping component
+This is a experimental version of the tab group component. It registers itself
+as `fluid-tab-group` custom element.
 
 ## Properties
 
-| Property      | Attribute     | Type     | Default                  | Description                       |
-| ------------- | ------------- | -------- | ------------------------ | --------------------------------- |
-| `activetabid` | `activetabid` | `string` | first tab of a tab group | Defines the currently active tab. |
-
-## Events
-
-| Event              | Description                                                                         |
-| ------------------ | ----------------------------------------------------------------------------------- |
-| `activeTabChanged` | Event that is being fired when the active tab changes due<br />to user interaction. |
+| Property      | Attribute     | Type     | Description                |
+| ------------- | ------------- | -------- | -------------------------- |
+| `activetabid` | `activetabid` | `string` | Defines a tab to be active |
 
 ## Slots
 
-| Name | Description                                                                        |
-| ---- | ---------------------------------------------------------------------------------- |
-|      | Default slot lets the user provide a ul element containing tabs for the tab-group. |
+| Name | Description                                               |
+| ---- | --------------------------------------------------------- |
+|      | Default slot lets the user provide a group of fluid-tabs. |

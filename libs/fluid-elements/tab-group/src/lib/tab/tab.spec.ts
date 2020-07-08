@@ -20,7 +20,9 @@ function tick(): Promise<void> {
   return Promise.resolve();
 }
 
-function getLiElement(fixture: FluidTab): HTMLLIElement | null | undefined {
+function getTabRootElement(
+  fixture: FluidTab,
+): HTMLLIElement | null | undefined {
   return fixture.shadowRoot?.querySelector('li');
 }
 
@@ -84,14 +86,14 @@ describe('Fluid tab', () => {
     it('Should set the disabled state when the attribute is present', async () => {
       fixture.setAttribute('disabled', '');
       await tick();
-      const shadowLi = getLiElement(fixture)!;
+      const shadowLi = getTabRootElement(fixture)!;
       expect(shadowLi.hasAttribute('disabled')).toBeTruthy();
     });
 
     it('Should set the disabled state when the attribute is set', async () => {
       fixture.setAttribute('disabled', 'true');
       await tick();
-      const shadowLi = getLiElement(fixture)!;
+      const shadowLi = getTabRootElement(fixture)!;
       expect(shadowLi.hasAttribute('disabled')).toBeTruthy();
     });
 
@@ -99,14 +101,14 @@ describe('Fluid tab', () => {
     it('Should set the disabled state when the property is set', async () => {
       fixture.disabled = true;
       await tick();
-      const shadowLi = getLiElement(fixture)!;
+      const shadowLi = getTabRootElement(fixture)!;
       expect(shadowLi.hasAttribute('disabled')).toBeTruthy();
     });
 
     it('Should reset the disabled state when the attribute is removed', async () => {
       fixture.removeAttribute('disabled');
       await tick();
-      const shadowLi = getLiElement(fixture)!;
+      const shadowLi = getTabRootElement(fixture)!;
       expect(shadowLi.hasAttribute('disabled')).toBeFalsy();
     });
 
@@ -132,7 +134,7 @@ describe('Fluid tab', () => {
 
   describe('tabActivated', () => {
     it('should fire event when tab is clicked', async () => {
-      getLiElement(fixture)?.click();
+      getTabRootElement(fixture)?.click();
       await tick();
       expect(tabActivated).toHaveBeenCalledTimes(1);
     });

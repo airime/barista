@@ -9,16 +9,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-
-  & ul {
-    margin-block-start: $fluid-spacing--small;
-    margin-block-end: $fluid-spacing--small;
-    margin-inline-start: $fluid-spacing--0;
-    margin-inline-end: $fluid-spacing--0;
-    padding-inline-start: $fluid-spacing--medium;
-  }
 }
 
 .fluid-tab-group {
   color: var(--color-maxcontrast);
+  margin-block-start: $fluid-spacing--small;
+  margin-block-end: $fluid-spacing--small;
+  margin-inline-start: $fluid-spacing--0;
+  margin-inline-end: $fluid-spacing--0;
+  padding-inline-start: $fluid-spacing--medium;
 }
