@@ -83,10 +83,6 @@ export class DsPageService<T = any> {
     return of(this._cache.get(key)!);
   }
 
-  _getRoutes(): Observable<T> {
-    return this._fetchRoutes();
-  }
-
   /**
    * Fetches page from data source.
    * @param id - page id (path).
@@ -96,11 +92,6 @@ export class DsPageService<T = any> {
     return this._http
       .get<T>(requestPath, { responseType: 'json' })
       .pipe(tap((data) => this._cache.set(id, data)));
-  }
-
-  private _fetchRoutes(): Observable<T> {
-    const requestPath = `data/routes.txt`;
-    return this._http.get<T>(requestPath, { responseType: 'json' });
   }
 }
 

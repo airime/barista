@@ -358,12 +358,7 @@
     },
     "next": {
       "tags": ["scope:design-system", "type:app"],
-      "implicitDependencies": [
-        "fluid-button",
-        "shared-data-access-strapi",
-        "shared-design-system-ui",
-        "shared-design-system-interfaces"
-      ]
+      "implicitDependencies": ["fluid-button"]
     },
     "shared-data-access-strapi": {
       "tags": ["scope:cms", "type:shared", "type:library"]
