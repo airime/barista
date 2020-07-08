@@ -32,7 +32,7 @@ import { APP_BASE_HREF } from '@angular/common';
   imports: [BrowserModule, HttpClientModule, NextRoutingModule],
   providers: [
     BaPageGuard,
-    BaPageService,
+    DsPageService,
     { provide: APP_BASE_HREF, useValue: '/next' },
   ],
   bootstrap: [AppComponent],
