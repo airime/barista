@@ -944,6 +944,9 @@
             "commands": [
               {
                 "command": "node dist/libs/tools/barista/main.js"
+              },
+              {
+                "command": "node dist/libs/tools/barista/main.js --next=true"
               }
             ]
           }

@@ -44,6 +44,7 @@ const BARISTA_BUILDERS = new Map<string, BaPageBuilder>([
 
 const NEXT_BUILDERS = new Map<string, BaPageBuilder>([
   ['strapi-builder', strapiBuilder],
+  // ['strapi-category-builder', strapiCategoryBuilder],
 ]);
 
 /**

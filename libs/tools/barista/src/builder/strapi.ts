@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { join } from 'path';
+import { join, dirname } from 'path';
 
 import {
   BaSinglePageMeta,
@@ -31,6 +31,7 @@ import {
   BaStrapiContentType,
   NextStrapiPage,
   NextContentType,
+  BaStrapiCategory,
 } from '../types';
 
 import { fetchContentList } from '@dynatrace/shared/data-access-strapi';
@@ -44,6 +45,7 @@ import {
   relativeUrlTransformer,
   tableOfContentGenerator,
 } from '../transform';
+import { mkdirSync, promises as fs } from 'fs';
 
 const TRANSFORMERS: BaPageTransformer[] = [
   markdownToHtmlTransformer,
@@ -52,6 +54,8 @@ const TRANSFORMERS: BaPageTransformer[] = [
   relativeUrlTransformer,
   tableOfContentGenerator,
 ];
+
+const nextEnvironment = { distDir: 'dist/next-data' };
 
 /** Page-builder for Strapi CMS pages. */
 export const strapiBuilder: BaPageBuilder = async (
@@ -76,6 +80,17 @@ export const strapiBuilder: BaPageBuilder = async (
         environment.strapiEndpoint,
       );
 
+  let categoriesData: BaStrapiCategory[] = [];
+
+  if (next) {
+    categoriesData = await fetchContentList<BaStrapiCategory>(
+      BaStrapiContentType.Categories,
+      { publicContent: isPublicBuild() },
+      environment.strapiEndpoint,
+    );
+    categoriesData = categoriesData.filter((data) => data.nextpages.length > 0);
+  }
+
   // Filter pages with draft set to null or false
   pagesData = pagesData.filter((page) => !page.draft);
 
@@ -96,8 +111,36 @@ export const strapiBuilder: BaPageBuilder = async (
     transformed.push({ pageContent, relativeOutFile });
   }
 
+  if (next) {
+    const categories = joinCategories(categoriesData);
+    writeCategoriesJson(categories);
+  }
+
   return transformed;
 };
+
+function joinCategories(categoriesData: BaStrapiCategory[]): string[] {
+  let categoriesJson: string[] = [];
+  for (const category of categoriesData) {
+    categoriesJson.push(category.title);
+  }
+  return categoriesJson;
+}
+
+function writeCategoriesJson(categories: string[]): void {
+  const outFile = join(nextEnvironment.distDir, 'categories.json');
+  console.log(JSON.stringify(categories));
+
+  // Creating folder path if it does not exist
+  mkdirSync(dirname(outFile), { recursive: true });
+
+  // Write file with page content to disc.
+  // tslint:disable-next-line: no-magic-numbers
+  fs.writeFile(outFile, JSON.stringify(categories), {
+    flag: 'w', // "w" -> Create file if it does not exist
+    encoding: 'utf8',
+  });
+}
 
 /**
  * Transform page metadata fetched from strapi
