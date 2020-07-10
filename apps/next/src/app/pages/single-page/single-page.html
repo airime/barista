@@ -1,10 +1,10 @@
-<div class="next-singlepage-grid" *ngIf="_pageContent">
+<div class="next-single-page-grid" *ngIf="_pageContent">
   <nav next-sidenav *ngIf="_pageContent.sidenav"></nav>
   <!-- False for now. Until sidenav component is implemented-->
   <nav></nav>
 
-  <main class="next-singlepage-main" id="main" role="main">
-    <article class="next-singlepage-content">
+  <main class="next-single-page-main" id="main" role="main">
+    <article class="next-single-page-content">
       <ds-page-content [data]="_pageContent.content"></ds-page-content>
     </article>
   </main>
