@@ -83,6 +83,14 @@ export class BaPageService<T = any> {
     return of(this._cache.get(key)!);
   }
 
+  _getCategories(): Observable<T> {
+    const requestPath = `${this._baseHref}/data/categories.json`;
+
+    return this._http.get<T>(requestPath, {
+      responseType: 'json',
+    });
+  }
+
   /**
    * Fetches page from data source.
    * @param id - page id (path).

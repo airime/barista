@@ -55,8 +55,6 @@ const TRANSFORMERS: BaPageTransformer[] = [
   tableOfContentGenerator,
 ];
 
-const nextEnvironment = { distDir: 'dist/next-data' };
-
 /** Page-builder for Strapi CMS pages. */
 export const strapiBuilder: BaPageBuilder = async (
   globalTransformers: BaPageTransformer[],
@@ -82,14 +80,15 @@ export const strapiBuilder: BaPageBuilder = async (
 
   let categoriesData: BaStrapiCategory[] = [];
 
-  if (next) {
-    categoriesData = await fetchContentList<BaStrapiCategory>(
-      BaStrapiContentType.Categories,
-      { publicContent: isPublicBuild() },
-      environment.strapiEndpoint,
-    );
-    categoriesData = categoriesData.filter((data) => data.nextpages.length > 0);
-  }
+  categoriesData = await fetchContentList<BaStrapiCategory>(
+    BaStrapiContentType.Categories,
+    { publicContent: isPublicBuild() },
+    environment.strapiEndpoint,
+  );
+
+  categoriesData = next
+    ? categoriesData.filter((data) => data.nextpages.length > 0)
+    : categoriesData.filter((data) => data.pages.length > 0);
 
   // Filter pages with draft set to null or false
   pagesData = pagesData.filter((page) => !page.draft);
@@ -111,10 +110,9 @@ export const strapiBuilder: BaPageBuilder = async (
     transformed.push({ pageContent, relativeOutFile });
   }
 
-  if (next) {
-    const categories = joinCategories(categoriesData);
-    writeCategoriesJson(categories);
-  }
+  const categories = joinCategories(categoriesData);
+  const distDir = next ? 'dist/next-data' : 'dist/barista-data';
+  writeCategoriesJson(distDir, categories);
 
   return transformed;
 };
@@ -127,8 +125,9 @@ function joinCategories(categoriesData: BaStrapiCategory[]): string[] {
   return categoriesJson;
 }
 
-function writeCategoriesJson(categories: string[]): void {
-  const outFile = join(nextEnvironment.distDir, 'categories.json');
+function writeCategoriesJson(distDir: string, categories: string[]): void {
+  console.log(distDir);
+  const outFile = join(distDir, 'categories.json');
   console.log(JSON.stringify(categories));
 
   // Creating folder path if it does not exist

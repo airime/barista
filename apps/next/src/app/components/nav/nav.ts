@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ThemeService } from '../../theme.service';
+import { BaPageService } from '@dynatrace/shared/data-access-strapi';
 
 @Component({
   selector: 'next-nav',
@@ -27,31 +32,19 @@ import { ThemeService } from '../../theme.service';
   },
 })
 export class Nav {
-  /** @internal Data needed to render the navigation. */
-  _navData$ = {
-    navItems: [
-      {
-        url: 'overview',
-        label: 'Overview',
-      },
-      {
-        url: 'design',
-        label: 'Design',
-      },
-      {
-        url: 'develop',
-        label: 'Develop',
-      },
-      {
-        url: 'components',
-        label: 'Components',
-      },
-      {
-        url: 'design-tokens',
-        label: 'Design Tokens',
-      },
-    ],
-  };
+  _navData$ = this._pageService._getCategories().subscribe((data) => {
+    this._navItems = data;
+    this._changeDetectorRef.detectChanges();
+  });
 
-  constructor(public _themeService: ThemeService) {}
+  /** @internal Data needed to render the navigation. */
+  _navItems: string[];
+
+  dataloaded = false;
+
+  constructor(
+    public _themeService: ThemeService,
+    private _pageService: BaPageService,
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
 }
